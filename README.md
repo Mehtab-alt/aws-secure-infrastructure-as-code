@@ -9,33 +9,7 @@ It is designed as a secure starting point for building a robust Infrastructure-a
 
 ## Architecture
 
-The project deploys the following architecture:
-│____________________________________
-┌───────────────────────────────────┐
-│ AWS Account_______________________│
-│                                   │
-│  ┌─────────────────────────────┐  │
-│  │         VPC Module          │  │
-│  │     (10.0.0.0/16)           │  │
-│  │                             │  │
-│  │  ┌───────────────────────┐  │  │
-│  │  │ Public Subnet         │  │  │
-│  │  │                       │  │  │
-│  │  │     ┌──────────────┐  │  │  │
-│  │  │     │  EC2 Module  │  │  │  │
-│  │  │     │  (Web Server)│◀─┼──┼─── SSH (22) / HTTP (80)
-│  │  │     └──────────────┘  │  │  │
-│  │  └───────────────────────┘  │  │
-│  └─────────────▲─────────────┘  │
-│                │                │
-│  ┌─────────────▼─────────────┐  │
-│  │   Internet Gateway / RT   │  │
-│  └─────────────────────────────┘  │
-└────────────────▲──────────────────┘
-│
-The Internet
-
-
+![architecture](architecture.png)
 
 ## Features
 
