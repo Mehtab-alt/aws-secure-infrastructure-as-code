@@ -1,0 +1,7 @@
+# -- Example Terraform Variables --
+# Copy this file to dev.tfvars or prod.tfvars and fill in your values.
+# Do NOT commit your .tfvars files to Git.
+
+aws_region    = "us-east-1"
+instance_type = "t2.micro"
+vpc_cidr_block = "10.0.0.0/16"
