@@ -1,0 +1,42 @@
+name: 'Terraform CD'
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  terraform_apply:
+    name: 'Terraform Apply'
+    runs-on: ubuntu-latest
+    
+    # Link this job to the 'production' environment for protection rules
+    environment: production
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Configure AWS Credentials via OIDC
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          # IMPORTANT: Update this with the ARN of the role you created
+          role-to-assume: arn:aws:iam::123456789012:role/github-actions-terraform-role
+          aws-region: us-east-1
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.2.0
+
+      - name: Terraform Init
+        run: terraform init
+
+      # The -auto-approve flag is safe here because the workflow is
+      # gated by the manual approval step in GitHub Environments.
+      - name: Terraform Apply
+        run: terraform apply -var-file="prod.tfvars" -auto-approve
