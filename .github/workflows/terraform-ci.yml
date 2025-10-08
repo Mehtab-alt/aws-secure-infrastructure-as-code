@@ -1,0 +1,50 @@
+name: 'Terraform CI'
+
+on:
+  pull_request:
+    branches:
+      - main
+      - develop
+
+# Required for OIDC authentication
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  terraform_plan:
+    name: 'Terraform Plan'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Configure AWS Credentials via OIDC
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          # IMPORTANT: Update this with the ARN of the role you created
+          role-to-assume: arn:aws:iam::123456789012:role/github-actions-terraform-role
+          aws-region: us-east-1
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.2.0
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Format Check
+        run: terraform fmt -check -recursive
+
+      - name: Terraform Validate
+        run: terraform validate
+
+      - name: Terraform Plan (for develop)
+        if: github.base_ref == 'develop'
+        run: terraform plan -var-file="dev.tfvars" -no-color
+
+      - name: Terraform Plan (for main)
+        if: github.base_ref == 'main'
+        run: terraform plan -var-file="prod.tfvars" -no-color
