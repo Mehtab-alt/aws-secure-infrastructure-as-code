@@ -10,9 +10,9 @@ It is designed as a secure starting point for building a robust Infrastructure-a
 ## Architecture
 
 The project deploys the following architecture:
-│
+│____________________________________
 ┌───────────────────────────────────┐
-│ AWS Account                       │
+│ AWS Account_______________________│
 │                                   │
 │  ┌─────────────────────────────┐  │
 │  │         VPC Module          │  │
